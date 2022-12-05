@@ -22,16 +22,14 @@ import os
 import cv2
 from torch.utils.tensorboard import SummaryWriter
 
-source_path = './sample1/'
-target_path = './encode1b/'
+source_path = './data/sample1/'             #the original mixed photo
+target_path = './data/encode1b/'            #the edged photo
 
-target_path1 = './encode/'
-target_path2 = './encode1b/'
 
-mask_path = './mask/'
-model_path = './log1_2(1b)'
-output_img_path = './output_trail(1b)'
-writer_dir = './runs1_100(1b)'
+truth_path = './truth/'                     #the label photo
+model_path = './log1_2(1b)'                 #path to save model
+output_img_path = './output_trail(1b)'      #path tp save images
+writer_dir = './runs1_100(1b)'              #path to save digits logs
 
 
 NUM_TRAIN = 50000
@@ -52,8 +50,8 @@ def initialize_weights(m):
 def init_img():
     if not os.path.exists(target_path):
         os.mkdir(target_path)
-    if not os.path.exists(mask_path):
-        os.mkdir(mask_path)
+    if not os.path.exists(truth_path):
+        os.mkdir(truth_path)
     for filename in os.listdir(source_path):
         path = os.path.join(source_path,filename)
         input = cv2.imread(path)
@@ -64,7 +62,7 @@ def init_img():
         cv2.imwrite(target1,output1)
         #
         output2 = input[:,H//2:,:]
-        target2 = os.path.join(mask_path,filename)
+        target2 = os.path.join(truth_path,filename)
         cv2.imwrite(target2,output2)
         
         print(filename)
@@ -84,7 +82,7 @@ def b2w():
 
 def train_noise():
     print("======= start training =======")
-    train_data = MyDatasets(target_path, mask_path, transform=transforms.ToTensor())
+    train_data = MyDatasets(target_path, truth_path, transform=transforms.ToTensor())
     train_loader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True)
     
     num_epochs = 200

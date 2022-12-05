@@ -19,13 +19,13 @@ import os
 import cv2
 from torch.utils.tensorboard import SummaryWriter
 
-noise_path = './log(1b)/'
-encode_path = './encode/'
-truth_path = './truth/'
+noise_path = './data/noise/'                  #noise edges photo path
+encode_path = './data/encode/'                  #edges photo path
+truth_path = './data/truth/'                    #label photo path
 
-model_path = './log1_pix2pix_mix'
-output_img_path = './output_pix2pix_mix'
-writer_dir = './runs1_pix2pix_mix'
+model_path = './log1_pix2pix_mix'               #path to samve model
+output_img_path = './output_pix2pix_mix'        #path to save images
+writer_dir = './runs1_pix2pix_mix'              #path to save digits logs
 
 num_epochs = 50
 batch_size = 32
