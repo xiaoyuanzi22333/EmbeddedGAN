@@ -1,0 +1,16 @@
+encode
+encode_mix
+truth
+
+log_noise2pix
+log_noise2pix_channel
+
+output_noise
+output_noise2pix
+output_noise2pix_channel
+output_pix2pix
+
+runs1_100_1b
+runs1_noise2pix
+runs1_noise2pix_channel
+runs1_pix2pix
