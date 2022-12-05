@@ -46,11 +46,3 @@ run the [base_pix.py](base_pix.py) to generate the original pix2pix iamges witho
 
 
 
-**Reference**
-
--[https://blog.csdn.net/qq_44124301/article/details/106153112](https://blog.csdn.net/qq_44124301/article/details/106153112)
-
--[https://github.com/junyanz/BicycleGAN.git](https://github.com/junyanz/BicycleGAN.git)
-
--[https://machinelearningmastery.com/how-to-develop-a-pix2pix-gan-for-image-to-image-translation/](https://machinelearningmastery.com/how-to-develop-a-pix2pix-gan-for-image-to-image-translation/)
-
