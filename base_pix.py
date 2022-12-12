@@ -18,25 +18,31 @@ from model.pix2pix import pix2pix_Discriminator, pix2pix_Generator
 import os
 import cv2
 from torch.utils.tensorboard import SummaryWriter
+from option.options import BaseOption
 
-noise_path = './data/noise/'                  #noise edges photo path
-encode_path = './data/encode/'                  #edges photo path
-truth_path = './data/truth/'                    #label photo path
 
-model_path = './log1_pix2pix_mix'               #path to samve model
-output_img_path = './output_pix2pix_mix'        #path to save images
-writer_dir = './runs1_pix2pix_mix'              #path to save digits logs
+opt = BaseOption().parse()
 
-num_epochs = 50
-batch_size = 32
+
+noise_path = opt.noise_path
+encode_path = opt.encode_path
+truth_path = opt.truth_path
+
+model_path = opt.model_path
+output_img_path = opt.output_img_path
+writer_dir = opt.writer_dir
+
+num_epochs = opt.num_epochs
+batch_size = opt.batch_size
 noise = False
-itr_save_img = 50
-epoch_save_model = 5
-cuda_device = 3
+itr_save_img = opt.itr_save_img
+epoch_save_model = opt.epoch_save_model
+cuda_device = opt.cuda_device
 
-def addNoise():
-    return
-
+in_ch = 3
+out_ch = 3
+dim = 64
+lamb = 100
 
 
 def train_pix2pix():
@@ -44,17 +50,8 @@ def train_pix2pix():
     train_data = MyDatasets(encode_path, truth_path, transform=transforms.ToTensor(), step=False)
     train_loader = DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True)
     
-    print("total epoch = ",num_epochs)
-    print("batch size = ", batch_size)
-    print("model path is: ", model_path)
-    print("output image path is: ", output_img_path)
-    print("summary writer directory is: ", writer_dir)
-    print("gpu id is: ", cuda_device)
     
-    in_ch = 3
-    out_ch = 3
-    dim = 64
-    lamb = 100
+    
     G = pix2pix_Generator(in_ch,out_ch,dim)
     G = G.cuda(cuda_device)
     D = pix2pix_Discriminator(in_ch,out_ch,dim)
@@ -98,7 +95,7 @@ def train_pix2pix():
             
             D_out = G(edge).detach()
             fake_out = torch.cat([edge,D_out], dim=1)
-            fake_out = fakeo_out.cuda(cuda_device)
+            fake_out = fake_out.cuda(cuda_device)
             D_out_fake = D(fake_out).squeeze()
             D_fake_loss = BCELoss(D_out_fake, torch.ones(D_out_fake.size()).to('cuda:'+str(cuda_device)))
             

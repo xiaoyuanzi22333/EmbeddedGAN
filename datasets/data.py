@@ -5,16 +5,16 @@ import cv2
 import random
 
 
-cuda_device = 1
 
 
 class MyDatasets():
-    def __init__(self, target_path, mask_path, transform=None,step=False, add=False):
+    def __init__(self, target_path, mask_path, transform=None,step=False, add=False, cuda_device=0):
         self.img = os.listdir(target_path)
         self.label = os.listdir(mask_path)
         self.i = 0
         self.step = step
         self.add = add # which step
+        self.cuda_device = 0
         
         assert  len(self.img) == len(self.label)
         
@@ -52,8 +52,8 @@ class MyDatasets():
             img = self.transform(img)
             label = self.transform(label)
             
-        img = img.cuda(cuda_device)
-        label = label.cuda(cuda_device)
+        img = img.cuda(self.cuda_device)
+        label = label.cuda(self.cuda_device)
         
         if self.add:
             noise_path = './output_noise/hbx_epoch'+str(randi)+'_1.jpg'
@@ -61,7 +61,7 @@ class MyDatasets():
             noise = cv2.cvtColor(noise,cv2.COLOR_RGB2GRAY)
             noise = cv2.resize(noise,(256,256))
             noise = self.transform(noise)
-            noise = noise.cuda(cuda_device)
+            noise = noise.cuda(self.cuda_device)
             img = torch.cat([img,noise],dim=0)
         
         
